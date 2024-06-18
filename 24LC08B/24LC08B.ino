@@ -2,11 +2,13 @@
 #define SCL 12
 #define SDA 11
 
-byte CTRL_Write[5] = {B00000000, B10101000, B10101010, B10101100, B10101110};
-byte CTRL_Read[5] = {B00000000, B10101001, B10101011, B10101101, B10101111};
-byte mask = B10000000;
-unsigned int CTRL_i = 0;
-bool ACK = true;
+const unsigned int DELAY = 500;
+
+const byte CTRL_Write[5] = {B00000000, B10101000, B10101010, B10101100, B10101110};
+const byte CTRL_Read[5] = {B00000000, B10101001, B10101011, B10101101, B10101111};
+const byte mask = B10000000;
+const byte rw_mask = B00000001;
+const bool ACK = true;
 
 void setup() 
 {
@@ -16,12 +18,11 @@ void setup()
   Serial.begin(9600);
 
   BusNotBusy();
-  delay(1000);
+  delay(4 * DELAY);
   StartDataTransfer();
-  SendData(100);
+  SendCTRL(CTRL_Write[1]);
   StopDataTransfer();
   BusNotBusy();
-  delay(1000);
 }
 
 void BusNotBusy()
@@ -32,25 +33,69 @@ void BusNotBusy()
 
 void StartDataTransfer()
 {
+  delay(10);
   digitalWrite(SDA, LOW);
   delay(100);
 }
 
 void StopDataTransfer()
 {
+  delay(10);
   digitalWrite(SDA, HIGH);
   delay(100);
 }
 
 void SendData(byte data)
 {
-  for(int i = 0; i< 8; i++)
+  bool bit;
+  
+  for(int i = 0; i < 8; i++)
   {
     digitalWrite(SCL, LOW);
-    delay(100);
+    delay(DELAY / 2);
+
+    if((data & (mask >> i)) == 0)
+      bit = false;
+    else
+      bit = true;
+
+    digitalWrite(SDA, bit);
+  
+    delay(DELAY / 2);
 
     digitalWrite(SCL, HIGH);
-    delay(100);
+    delay(DELAY);
+  }
+}
+
+void SendCTRL(byte data)
+{
+  SendData(data);
+
+  digitalWrite(SDA, LOW);
+  pinMode(SDA, INPUT);
+
+  digitalWrite(SCL, LOW);
+  delay(DELAY);
+  digitalWrite(SCL, HIGH);
+  delay(DELAY);
+
+  pinMode(SDA, OUTPUT);
+}
+
+byte ReadBus()
+{
+  bool bit;
+  
+  for(int i = 0; i < 8; i++)
+  {
+    digitalWrite(SCL, LOW);
+    delay(DELAY);
+
+    digitalWrite(SCL, HIGH);
+    delay(DELAY / 2);
+
+    
   }
 }
 
