@@ -2,7 +2,7 @@
 #define SCL 12
 #define SDA 11
 
-const unsigned int DELAY = 500;
+const unsigned int DELAY = 100;
 
 const byte CTRL_Write[5] = {B00000000, B10101000, B10101010, B10101100, B10101110};
 const byte CTRL_Read[5] = {B00000000, B10101001, B10101011, B10101101, B10101111};
@@ -17,10 +17,13 @@ void setup()
   pinMode(SDA, OUTPUT);
   Serial.begin(9600);
 
+  digitalWrite(WP, LOW);
+
   BusNotBusy();
   delay(4 * DELAY);
   StartDataTransfer();
-  SendCTRL(CTRL_Write[1]);
+  SendCTRL(CTRL_Read[4]);
+  ReadBus();
   StopDataTransfer();
   BusNotBusy();
 }
@@ -93,9 +96,7 @@ byte ReadBus()
     delay(DELAY);
 
     digitalWrite(SCL, HIGH);
-    delay(DELAY / 2);
-
-    
+    delay(DELAY);
   }
 }
 
