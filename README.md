@@ -35,3 +35,13 @@ Utilizează funcția writeI2CByte(byte data_addr, byte data) pentru a citi într
 
 void WritePage(char* data)
 Utilizează funcția writeI2CByte(byte data_addr, byte data) pentru a scrie în memorie cu ce se află in bufferul data.
+
+21.06:
+Am realizat schema electrică in Proteus.
+Am legat și registrul de shiftare la circuit. La output-ul acestuia sunt conectate 8 LED-uri pentru a vizualiza byte-ul care este citit din EEPROM.
+Registrul are capacitatea de 1 byte. Intrarea lui este seriala iar ieșirea paralelă.
+Codul arduino: Când se citește un byte din EEPROM, acesta va fi stocat în registru.
+Utilitate: De obicei, când un dispozitiv dorește să citească un byte din EEPROM, acesta le așteaptă pe o magistrală de 8 cabluri (câte un cablu pe bit).
+Dar EEPROM-ul fiind serial, acesta pune cei 8 biți pe un singur cablu, unul după altul.
+Registrul de shiftare transformă byte-ul serial care vine pe un singur cablu, în unul paralel pe 8 cabluri.
+
