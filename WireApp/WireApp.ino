@@ -11,7 +11,7 @@ const int buttonPin = 6;
 const int ledPin = 13;
 
 const int sw_addr_pin[] = {7, 13, 12, 11, 2, 3, 4, 5};
-const int sw_sel_pin[] = {A5, A4, A3};
+const int sw_sel_pin[] = {A2, A1, A0};
 
 int sw_addr = 0;
 int sw_addr_old;
@@ -51,10 +51,8 @@ void loop() {
   sw_sel = 0;
   sw_addr = 0;
 
-  if(DebounceButton())
+if(DebounceButton())
   {
-    ledState = LOW;
-
     for(int i = 0; i < 8; i++)
     {
       sw_addr += (!digitalRead(sw_addr_pin[i])) * ( 1 << i);
@@ -79,6 +77,8 @@ void loop() {
       //Serial.println();
     }
 
+  
+    ledState = LOW;
     Serial.print("====================================");
     Serial.println();
     Serial.print("Counter: ");
@@ -94,16 +94,14 @@ void loop() {
     Serial.println();
     Serial.print("====================================");
     Serial.println();
-
-    //ReadPage();
-
-    byte rom_data = readI2CByte(counter);
+/*
+    rom_data = readI2CByte(counter);
     WriteRegister(rom_data);
     Serial.print("DATA: 0X");
     Serial.print(rom_data, HEX);
     Serial.println();
 
-    byte rom_data = readI2CByte(sw_addr);
+    rom_data = readI2CByte(sw_addr);
     WriteRegister(rom_data);
     Serial.print("DATA: 0X");
     Serial.print(rom_data, HEX);
@@ -117,26 +115,30 @@ void loop() {
       Serial.println(dataForReg);
       delay(10);
     }
-
-/*
-      if(sw_sel == 0);
-
-      if(sw_sel == 1)
+*/
+    switch(sw_sel)
+    {
+      case 0:
+        Serial.println("DEBUG CASE 0");
+        break;
+      case 1:
+        Serial.println("DEBUG CASE 1");
         WritePage(nums);
-
-      if(sw_sel == 2)
+        break;
+      case 2:
+        Serial.println("DEBUG CASE 3");
         ReadPage();
-
-      if(sw_sel == 3)
-        {
+        break;
+      case 3:
+        Serial.println("DEBUG CASE 4");
         byte rom_data = readI2CByte(sw_addr);
         WriteRegister(rom_data);
         Serial.print("DATA: 0X");
         Serial.print(rom_data, HEX);
         Serial.println();
-        }
-      if(sw_sel == 4)
-        {
+        break;
+      case 4:
+        Serial.println("DEBUG CASE 4");
         byte dataForReg;
         Serial.println();
         Serial.print("====================================");
@@ -157,17 +159,58 @@ void loop() {
           delay(10);
         }
         Serial.println();
-        }
-      if(sw_sel == 5)
-        {
-        byte rom_data = readI2CByte(counter);
+        break;
+      case 5:
+        Serial.println("DEBUG CASE 5");
+        rom_data = readI2CByte(counter);
         WriteRegister(rom_data);
         Serial.print("DATA: 0X");
         Serial.print(rom_data, HEX);
         Serial.println();
+        break;
+      case 6:
+        break;
+      case 7:
+        break;
+      default:
+        break;
+    }
+    if(sw_sel == 4)
+    {
+      Serial.println("DEBUG CASE 4 IF");
+      byte dataForReg;
+        Serial.println();
+        Serial.print("====================================");
+        Serial.println();
+        for(int i = 0; i < 256; i++)
+        {
+          if(i % 8 == 0)
+          {
+            Serial.println();
+            Serial.print("0x");
+            Serial.print(i, HEX);
+            Serial.print(": ");
+          }
+          dataForReg = readI2CByte(i);
+          WriteRegister(dataForReg);
+          Serial.print(dataForReg, HEX);
+          Serial.print(" ");
+          delay(10);
         }
-        */
+        Serial.println();
+    }
+
+    if(sw_sel == 5)
+    {
+      Serial.println("DEBUG CASE 5 IF");
+      byte rom_data = readI2CByte(counter);
+      WriteRegister(rom_data);
+      Serial.print("DATA: 0X");
+      Serial.print(rom_data, HEX);
+      Serial.println();
+    }
   }
+  
   
 }
 
