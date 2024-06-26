@@ -45,3 +45,24 @@ Utilitate: De obicei, când un dispozitiv dorește să citească un byte din EEP
 Dar EEPROM-ul fiind serial, acesta pune cei 8 biți pe un singur cablu, unul după altul.
 Registrul de shiftare transformă byte-ul serial care vine pe un singur cablu, în unul paralel pe 8 cabluri.
 
+25.06:
+Am adaugat switch-uri pentru a selecta o adresa si un mod de selectie.
+Modul de selectie va specifica programatorului ce sa faca (sa scrie, sa citeasca tot/de la o anumita adresa...)
+Exista niste probleme care trebuie remediate.
+Am experimentat cu un display LCD. Nu poate fi folosit deoarece cablurile lui nu fac bine contact.
+De asemenea are nevoie de 8 cabluri de control iar placa de dezvoltare nu mai are pini liberi.
+
+26.06:
+Am remediat problemele din ziua respectiva.
+Programatorul este complet.
+Selectul poate actiona urmatoarele operatiuni:
+0: nimic
+1: scrie intreg EEPROM-ul
+2: sterge intreg EEPROM-ul (scriere cu 1)
+3: citire a intreg EEPROM-ului intr-un buffer si afisarea la Serial Monitor (SM)
+4: citire a intreg EEPROM-ului si afisarea pe LED-uri
+5: citire a unui byte la apasare de buton si afisare pe SM si LED-uri
+6: citire a unui byte de la adresa switch-urilor
+7: afisarea in SM a starii inputurilor (adresa, select-ul, counter-ul);
+
+
