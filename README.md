@@ -65,4 +65,9 @@ Selectul poate actiona urmatoarele operatiuni:
 6: citire a unui byte de la adresa switch-urilor
 7: afisarea in SM a starii inputurilor (adresa, select-ul, counter-ul);
 
+Proiectul a fost finalizat si prezentat.
+
+27.06:
+Ma uit pe git-urile colegilor sa vad ce au facut :3
+
 
